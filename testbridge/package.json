@@ -11,6 +11,7 @@
 		"react-native": "0.50.3",
 		"react-native-datepicker-dialog": "0.0.7",
 		"react-native-dropdownalert": "^3.1.2",
+		"react-native-fingerprint-scanner": "^2.2.1",
 		"react-native-popup-dialog": "^0.9.39",
 		"react-native-side-menu": "^1.1.3",
 		"react-native-toast-native": "^1.2.1"

@@ -32,6 +32,9 @@ const slideAnimation = new SlideAnimation({
   slideFrom: 'bottom',
 });
 
+import FingerprintScanner from 'react-native-fingerprint-scanner';
+import FingerprintPopup from './FingerPrintPopup/FingerprintPopup';
+
 export default class App extends Component {
   constructor(props){
     super(props)
@@ -40,7 +43,23 @@ export default class App extends Component {
     this.state = {
       isOpen: false,
       selectedItem: 'About',
+      popupShowed: false, //FingerPrint
+      popupShowed: false //FingerPrint
     };
+  }
+
+  handleFingerprintShowed = () => {
+    this.setState({ popupShowed: true });
+  };
+
+  handleFingerprintDismissed = () => {
+    this.setState({ popupShowed: false });
+  };
+
+  componentDidMount() {
+    FingerprintScanner
+      .isSensorAvailable()
+      .catch(error => this.setState({ errorMessage: error.message }));
   }
  
   toggle() {
@@ -107,6 +126,8 @@ export default class App extends Component {
   render() {
     var url = "http://10.11.38.74:8080";
     const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
+    const errorMessage = this.state.errorMessage;
+    const popupShowed = this.state.popupShowed;
     return (
       <SideMenu
         menu={menu}
@@ -132,6 +153,18 @@ export default class App extends Component {
           <PopupDialog ref={(popupDialog) => { this.popupDialog = popupDialog; }} dialogAnimation={slideAnimation} dialogTitle={<DialogTitle title="Dialog Title" />} width={200}height={200}>
             <View><Text>Test </Text></View>
           </PopupDialog>
+
+          {errorMessage && (
+            <Text >
+              {errorMessage}
+            </Text>
+          )}
+
+          {popupShowed && (
+          <FingerprintPopup
+            handlePopupDismissed={this.handleFingerprintDismissed}
+          />
+          )}
           
           <DatePickerDialog ref="journeyDialog" onDatePicked={this.onJourneyDatePicked.bind(this)} />
           <DropdownAlert ref={ref => this.dropdown = ref} onClose={data => this.onClose(data)} />
@@ -153,18 +186,21 @@ export default class App extends Component {
 
   showToast = (message) => {
     let toastStyle={
-      backgroundColor: "#000000",
+      backgroundColor: "#999999",
       width: 300,
       height: Platform.OS === ("ios") ? 65 : 130,
       color: "#ffffff",
-      fontSize: 15,
-      lineHeight: 2,
-      lines: 4,
+      fontSize: 60,
+
       borderRadius: 15,
       fontWeight: "bold",
       yOffset: 200
     };
     Toast.show(message, Toast.SHORT, Toast.BOTTOM,toastStyle);
+  }
+
+  fingerprintLogin = () => {
+    this.handleFingerprintShowed()
   }
 
   dropDownAlert = (message) => {

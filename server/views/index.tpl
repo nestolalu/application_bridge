@@ -15,6 +15,7 @@
         <button type="button" class="btn btn-info btn-lg btn-block" onClick="dropDownAlert('Hello message!')" >Show dropDownAlert</button>
         <button type="button" class="btn btn-primary btn-lg btn-block" onClick="showDialog('Hello dialog!')" >Show Dialog</button>
         <button type="button" class="btn btn-info btn-lg btn-block" onClick="showDatePicker()" >Show datePicker</button>
+        <button type="button" class="btn btn-primary btn-lg btn-block" onClick="fingerprintLogin()" >Login</button>
       </div>
     
 
@@ -59,6 +60,16 @@
     function showDatePicker() {
         if(typeof webViewBridge !== "undefined" && webViewBridge !== null){
             webViewBridge.send('showDatePicker', null, function(){console.log('success')},function(){console.log('error')});
+        }
+        // Check if navigator
+        else{
+            alert("Not viewing in webview");
+        }   
+    }
+
+    function fingerprintLogin() {
+        if(typeof webViewBridge !== "undefined" && webViewBridge !== null){
+            webViewBridge.send('fingerprintLogin', null, function(){console.log('success')},function(){console.log('error')});
         }
         // Check if navigator
         else{
