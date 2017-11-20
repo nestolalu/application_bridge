@@ -98,7 +98,6 @@ export default class MyWebView extends Component {
         if("position" in myModule) position = (myModule.position == "top") ? Toast.TOP : Toast.BOTTOM;
         
         Toast.show(message, duration, position,toastStyle);
-        return null;
     }
 }
 

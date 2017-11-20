@@ -16,7 +16,8 @@ import {
   Text,
   ActivityIndicator,
   TouchableOpacity,
-  Image
+  Image,
+  BackHandler
 } from 'react-native';
 
 import Toast from 'react-native-toast-native';
@@ -60,6 +61,7 @@ export default class App extends Component {
     FingerprintScanner
       .isSensorAvailable()
       .catch(error => this.setState({ errorMessage: error.message }));
+      BackHandler.addEventListener('hardwareBackPress', this.backHandler);
   }
  
   toggle() {
@@ -98,7 +100,10 @@ export default class App extends Component {
 
     // invoke target function
     //const response = this[msgData.targetFunc].apply(this, [msgData]);
-    const response = this[msgData.targetFunc].apply(this, [msgData.data]);
+
+    const response = "response"
+    if(typeof (this[msgData.targetFunc]) !== "undefined")
+      this[msgData.targetFunc].apply(this, [msgData.data]);
     
     // trigger success callback
 
@@ -123,8 +128,28 @@ export default class App extends Component {
   onJourneyDatePicked = (date) => {
   }
 
+ 
+  componentWillUnmount(){
+    BackHandler.removeEventListener('hardwareBackPress', this.backHandler);
+  }
+  backHandler = () => {
+      if(this.state.backButtonEnabled) {
+        this.myWebView.goBack();
+        return true;
+      }else{
+        BackHandler.exitApp();
+      }
+  }
+
+  onNavigationStateChange = (navState) => {
+    this.setState({
+        backButtonEnabled: navState.canGoBack,
+    });
+  };
+
   render() {
-    var url = "http://10.11.38.74:8080";
+    //var url = "http://10.11.38.74:8080";
+    var url = "https://github.com/nestolalu/application_bridge"
     const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
     const errorMessage = this.state.errorMessage;
     const popupShowed = this.state.popupShowed;
@@ -148,7 +173,8 @@ export default class App extends Component {
             onMessage={this.onWebViewMessage}
             renderLoading={this.ActivityIndicatorLoadingView}
             startInLoadingState={true} 
-            style={styles.WebViewStyle}/>
+            style={styles.WebViewStyle}
+            onNavigationStateChange={this.onNavigationStateChange}/>
           
           <PopupDialog ref={(popupDialog) => { this.popupDialog = popupDialog; }} dialogAnimation={slideAnimation} dialogTitle={<DialogTitle title="Dialog Title" />} width={200}height={200}>
             <View><Text>Test </Text></View>
@@ -247,6 +273,3 @@ const styles = StyleSheet.create({
     
   }
 });
-
-
-
