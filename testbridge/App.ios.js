@@ -158,7 +158,7 @@ export default class App extends Component {
                 <TouchableOpacity
                   disabled={!this.state.backButtonEnabled}
                   onPress={this.backHandler.bind(this)}
-                  style={{ alignSelf: 'flex-end', marginRight:10}}>
+                  style={{ alignSelf: 'flex-end', marginRight:10, display: !this.state.backButtonEnabled ? 'none':'flex'}}>
                   <Text style={styles.topbarText}>Go Back</Text>
                 </TouchableOpacity>
             </View>
