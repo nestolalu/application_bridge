@@ -4,6 +4,7 @@
  * @flow
  * 
  * TODO think about how to configure config.json and render componet / inject component (module) dynamically
+ * CHECK the config json... read & generate or generate & read
  * 
  */
 
@@ -86,7 +87,6 @@ export default class App extends Component {
 
   onWebViewMessage(event) {
     // post back reply as soon as possible to enable sending the next message
-    console.log("oui");
     this.myWebView.postMessage(event.nativeEvent.data);
 
     let msgData;

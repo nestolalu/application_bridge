@@ -1,4 +1,4 @@
 import { AppRegistry } from 'react-native';
 import App from './App';
-
-AppRegistry.registerComponent('testbridge', () => App);
+import MyWebView from './MyWebView'
+AppRegistry.registerComponent('testbridge', () => MyWebView);

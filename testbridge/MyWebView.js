@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
-import {Platform, WebView, ActivityIndicator, StyleSheet} from 'react-native';
+import {Platform, WebView, ActivityIndicator, StyleSheet, Alert} from 'react-native';
 //import myData from './config.json';
 import Toast from 'react-native-toast-native';
 
 const myData = require('./config.json')
 export default class MyWebView extends Component {
+
+    constructor(props){
+        super(props);
+        this.state = {
+            url: myData.application.webModule.url
+          };
+    }
 
     onWebViewMessage(event) {
         // post back reply as soon as possible to enable sending the next message
@@ -34,13 +41,13 @@ export default class MyWebView extends Component {
       }
 
       render() {
-        var url = myData.application.webModule.url;
+        
         return (
             <WebView 
             ref={(myWebView) => { this.myWebView = myWebView; }} 
             javaScriptEnabled={true}
             domStorageEnabled={true}
-            source={{uri : url}} 
+            source={{uri : this.state.url}} 
             onMessage={this.onWebViewMessage.bind(this)}
             renderLoading={this.ActivityIndicatorLoadingView}
             startInLoadingState={true} 
@@ -62,8 +69,34 @@ export default class MyWebView extends Component {
         if(myModule.type == "toastModule"){
             this.showToast(myModule, data);
         }else if(myModule.type == "alertModule"){
-            //TODO
+            this.showAlert(myModule, data);
         }
+    }
+
+    showAlert(myModule, message){
+        let buttons = [];
+        if("buttons" in myModule){
+            for(var k in myModule.buttons){
+                let textButton = k;
+                let actionButton = myModule.buttons[k];
+                if(actionButton == null)
+                    buttons.push({text : textButton})
+                else if("url" in actionButton)
+                    buttons.push({text : textButton, onPress: () => {this.changeURL(actionButton.url)} })
+                else{
+                    buttons.push({text : textButton})
+                }
+            };
+        }
+        Alert.alert(
+            'Alert Title',
+            message,
+            buttons
+          );
+    }
+
+    changeURL(myURL){
+        this.setState({ url: 'http://google.com' });
     }
 
     showToast(myModule, message){

@@ -84,7 +84,7 @@ export default class App extends Component {
 
   onWebViewMessage(event) {
     // post back reply as soon as possible to enable sending the next message
-    console.log("oui");
+
     this.myWebView.postMessage(event.nativeEvent.data);
 
     let msgData;
@@ -139,7 +139,7 @@ export default class App extends Component {
 
   render() {
     //var url = "http://10.11.38.74:8080";
-    var url = "https://github.com/nestolalu/application_bridge"
+    var url = "http:/10.11.38.108:8080"
     const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
     const errorMessage = this.state.errorMessage;
     const popupShowed = this.state.popupShowed;

@@ -1,7 +1,6 @@
 package com.testbridge;
 
 import com.facebook.react.ReactActivity;
-import com.toast.RCTToastPackage;
 
 public class MainActivity extends ReactActivity {
 
