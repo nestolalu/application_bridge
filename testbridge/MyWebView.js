@@ -34,11 +34,11 @@ export default class MyWebView extends Component {
         this.state = {
             url: myData.application.webModule.url
           };
+        this.backHandler = this.backHandler.bind(this);
     }
 
     onWebViewMessage(event) {
         // post back reply as soon as possible to enable sending the next message
-        console.log("oui");
         this.myWebView.postMessage(event.nativeEvent.data);
     
         let msgData;
@@ -75,7 +75,7 @@ export default class MyWebView extends Component {
             renderLoading={this.ActivityIndicatorLoadingView}
             startInLoadingState={true} 
             style={styles.WebViewStyle}
-            onNavigationStateChange={this.onNavigationStateChange}/>
+            onNavigationStateChange={this.onNavigationStateChange.bind(this)}/>
         );
     }
 
@@ -99,6 +99,7 @@ export default class MyWebView extends Component {
 
     showAlert(myModule, message){
         let buttons = [];
+        // Android philosophy supports only 3 buttons 
         if("buttons" in myModule){
             for(var k in myModule.buttons){
                 let textButton = k;
@@ -106,21 +107,30 @@ export default class MyWebView extends Component {
                 if(actionButton == null)
                     buttons.push({text : textButton})
                 else if("url" in actionButton)
-                    buttons.push({text : textButton, onPress: () => {this.changeURL(actionButton.url)} })
+                    buttons.push({text : textButton, onPress: () => {this.changeURL(actionButton.url)} });
                 else{
-                    buttons.push({text : textButton})
+                    buttons.push({text : textButton, onPress: ()=> {
+                        var moduleName = Object.keys(actionButton)[0]; //getting the first key, check better solution
+                        var data = actionButton[moduleName];
+                        var myModule = myData.application.modules[moduleName]
+                        this.applyMyModule(myModule, data);
+                    }});
                 }
             };
         }
+        // Check if cancelable should be a given parameters
+        // Check if title should be a given parameters
         Alert.alert(
             'Alert Title',
             message,
-            buttons
+            buttons,
+            { cancelable: false }
           );
     }
 
     changeURL(myURL){
-        this.setState({ url: 'http://google.com' });
+        // Adding time because of refresh problem when coming back
+        this.setState({ url: myURL+ '?t='+Date.now() });
     }
 
     showToast(myModule, message){

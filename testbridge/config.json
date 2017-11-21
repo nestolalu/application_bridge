@@ -3,7 +3,7 @@
     "title" : "Application title",
     "header" : true,
     "webModule" : {
-        "url" : "https://github.com/nestolalu/application_bridge",
+        "url" : "http://10.11.38.108:8080",
         "name" : "container"
     },
     "modules" : {
@@ -13,7 +13,7 @@
             "style" : {
 
                  "color": "#999999",
-                 "fontSize": 25
+                 "fontSize": 15
             },
             "type" : "toastModule"
         },
@@ -46,6 +46,9 @@
                     "showToast" : "hello"
                 },
                 "Repeat" : {
+                    "showAlert" : "Can you repeat"
+                },
+                "Repeat2" : {
                     "showAlert" : "Can you repeat"
                 },
                 "Cancelaaaas" : null
