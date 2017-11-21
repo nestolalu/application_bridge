@@ -1,10 +1,33 @@
 import React, { Component } from 'react';
-import {Platform, WebView, ActivityIndicator, StyleSheet, Alert} from 'react-native';
+import {Platform, WebView, ActivityIndicator, StyleSheet, Alert, BackHandler} from 'react-native';
 //import myData from './config.json';
 import Toast from 'react-native-toast-native';
 
 const myData = require('./config.json')
 export default class MyWebView extends Component {
+
+    componentDidMount(){
+        BackHandler.addEventListener('hardwareBackPress', this.backHandler);
+    }
+    
+    componentWillUnmount(){
+        BackHandler.removeEventListener('hardwareBackPress', this.backHandler);
+    }
+
+    onNavigationStateChange = (navState) => {
+        this.setState({
+            backButtonEnabled: navState.canGoBack,
+        });
+    };
+
+    backHandler = () => {
+        if(this.state.backButtonEnabled) {
+          this.myWebView.goBack();
+          return true;
+        }else{
+          BackHandler.exitApp();
+        }
+    }
 
     constructor(props){
         super(props);
@@ -51,7 +74,8 @@ export default class MyWebView extends Component {
             onMessage={this.onWebViewMessage.bind(this)}
             renderLoading={this.ActivityIndicatorLoadingView}
             startInLoadingState={true} 
-            style={styles.WebViewStyle}/>
+            style={styles.WebViewStyle}
+            onNavigationStateChange={this.onNavigationStateChange}/>
         );
     }
 

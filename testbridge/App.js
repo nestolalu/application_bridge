@@ -149,7 +149,7 @@ export default class App extends Component {
 
   render() {
     //var url = "http://10.11.38.74:8080";
-    var url = "http:/10.11.38.108:8080"
+    var url = "https://github.com/nestolalu/application_bridge"
     const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
     const errorMessage = this.state.errorMessage;
     const popupShowed = this.state.popupShowed;
@@ -164,6 +164,14 @@ export default class App extends Component {
                 <Image source={image} style={{ width: 32, height: 32 }}  />
               </TouchableOpacity>
               <Text style={{fontSize:30, fontWeight:'bold', marginLeft:30}}>Title</Text>
+              <View style={{flex:1}}>
+                <TouchableOpacity
+                  disabled={!this.state.backButtonEnabled}
+                  onPress={this.backHandler.bind(this)}
+                  style={{ alignSelf: 'flex-end', marginRight:10, display: !this.state.backButtonEnabled ? 'none':'flex'}}>
+                  <Text style={styles.topbarText}>Go Back</Text>
+                </TouchableOpacity>
+            </View>
           </View>
           <WebView 
             ref={this._refWebView} 

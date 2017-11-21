@@ -21,4 +21,4 @@ Test of reading from config.json
 
 ### App 
 
-Test of bridging + handle back button webview
+Test of bridging 

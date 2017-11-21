@@ -3,7 +3,7 @@
     "title" : "Application title",
     "header" : true,
     "webModule" : {
-        "url" : "http:/10.11.38.108:8080",
+        "url" : "https://github.com/nestolalu/application_bridge",
         "name" : "container"
     },
     "modules" : {
