@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Platform, WebView, ActivityIndicator, StyleSheet, Alert, BackHandler} from 'react-native';
+import {Platform, WebView, ActivityIndicator, StyleSheet, Alert, BackHandler, View, Text} from 'react-native';
 //import myData from './config.json';
 import Toast from 'react-native-toast-native';
 
@@ -67,19 +67,39 @@ export default class MyWebView extends Component {
         //this.myWebView.postMessage(JSON.stringify(msgData))
       }
 
+      buildHeader(){
+          //TODO build style fo header
+          let headerStyle = {
+            height : 60,
+            backgroundColor:'#7795c6',
+            alignItems : 'center',
+            flexDirection: 'row'
+          }
+          return <View style={headerStyle}>
+                    <Text style={{fontSize:30, fontWeight:'bold', marginLeft:10}}>{myData.application.title}</Text>
+                </View>
+      }
+
       render() {
+        let header = null;
+        if (myData.application.header) {
+           header = this.buildHeader();
+        }
         
         return (
-            <WebView 
-            ref={(myWebView) => { this.myWebView = myWebView; }} 
-            javaScriptEnabled={true}
-            domStorageEnabled={true}
-            source={{uri : this.state.url}} 
-            onMessage={this.onWebViewMessage.bind(this)}
-            renderLoading={this.ActivityIndicatorLoadingView}
-            startInLoadingState={true} 
-            style={styles.WebViewStyle}
-            onNavigationStateChange={this.onNavigationStateChange.bind(this)}/>
+            <View style={styles.container}>
+                {header}
+                <WebView 
+                ref={(myWebView) => { this.myWebView = myWebView; }} 
+                javaScriptEnabled={true}
+                domStorageEnabled={true}
+                source={{uri : this.state.url}} 
+                onMessage={this.onWebViewMessage.bind(this)}
+                renderLoading={this.ActivityIndicatorLoadingView}
+                startInLoadingState={true} 
+                style={styles.WebViewStyle}
+                onNavigationStateChange={this.onNavigationStateChange.bind(this)}/>
+            </View>
         );
     }
 
@@ -173,6 +193,11 @@ export default class MyWebView extends Component {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#F5FCFF',
+        marginTop: Platform.OS === ("ios") ? 20 : 0,
+      },
     WebViewStyle:
     {
        justifyContent: 'center',
