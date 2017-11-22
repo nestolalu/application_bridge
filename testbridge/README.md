@@ -9,6 +9,9 @@
 * react-native-side-menu
 * react-native-fingerprint-scanner
 
+    npm install [name of external lib]
+    react-native link
+ 
 ## SDK
 
 25
