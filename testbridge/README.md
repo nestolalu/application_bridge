@@ -21,6 +21,7 @@ react-native link
 ## Explanation of differents apps
 
 In RN project, in file index.js, choose the right APP to test (import & register)
+
 TODO : launch screen
 
 ### AppTestBridge
