@@ -11,6 +11,7 @@
 
     npm install [name of external lib]
     react-native link
+    adsfasdf
  
 ## SDK
 
