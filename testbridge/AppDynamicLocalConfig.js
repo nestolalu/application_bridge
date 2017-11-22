@@ -4,7 +4,7 @@ import {Platform, WebView, ActivityIndicator, StyleSheet, Alert, BackHandler, Vi
 import Toast from 'react-native-toast-native';
 
 const myData = require('./config.json')
-export default class MyWebView extends Component {
+export default class AppDynamicLocalConfig extends Component {
 
     componentDidMount(){
         BackHandler.addEventListener('hardwareBackPress', this.backHandler);
@@ -203,7 +203,8 @@ const styles = StyleSheet.create({
        justifyContent: 'center',
        alignItems: 'center',
        flex:1,
-       margin: 5
+       margin: 5,
+       backgroundColor : 'transparent'
     },
     ActivityIndicatorStyle:{
         position: 'absolute',

@@ -37,7 +37,7 @@ const slideAnimation = new SlideAnimation({
 import FingerprintScanner from 'react-native-fingerprint-scanner';
 import FingerprintPopup from './FingerPrintPopup/FingerprintPopup';
 
-export default class App extends Component {
+export default class AppTestBridge extends Component {
   constructor(props){
     super(props)
     this.onWebViewMessage = this.onWebViewMessage.bind(this);
@@ -150,7 +150,7 @@ export default class App extends Component {
   };
 
   render() {
-    var url = "http://10.11.38.96:8080";
+    var url = "http://10.11.38.27:8080";
     //var url = "https://github.com/nestolalu/application_bridge"
     const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
     const errorMessage = this.state.errorMessage;
@@ -270,7 +270,8 @@ const styles = StyleSheet.create({
      justifyContent: 'center',
      alignItems: 'center',
      flex:1,
-     margin: 5
+     margin: 5,
+     backgroundColor : 'transparent'
   },
   ActivityIndicatorStyle:{
       position: 'absolute',

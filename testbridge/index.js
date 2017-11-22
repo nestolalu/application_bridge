@@ -1,4 +1,5 @@
 import { AppRegistry } from 'react-native';
-import App from './App';
-import MyWebView from './MyWebView'
-AppRegistry.registerComponent('testbridge', () => MyWebView);
+import AppTestBridge from './AppTestBridge';
+import AppDynamicLocalConfig from './AppDynamicLocalConfig'
+import AppTwoWebView from './AppTwoWebView'
+AppRegistry.registerComponent('testbridge', () => AppTwoWebView);
