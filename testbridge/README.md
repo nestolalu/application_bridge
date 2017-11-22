@@ -22,7 +22,7 @@ react-native link
 
 In RN project, in file index.js, choose the right APP to test (import & register)
 
-TODO : launch screen
+**TODO** : launch screen
 
 ### AppTestBridge
 
