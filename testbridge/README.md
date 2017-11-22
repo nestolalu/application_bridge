@@ -18,17 +18,29 @@ react-native link
 
 25
 
-## Explanation
+## Explanation of differents apps
 
-### MyWebView
+In RN project, in file index.js, choose the right APP to test (import & register)
+TODO : launch screen
 
-Test of reading from config.json
+### AppTestBridge
 
-### App 
+Test of bridging
 
-Test of bridging 
+### AppDynamicLocalConfig
 
-### Idea of native module available in web app
+Test of reading from local config.json
+
+### AppTwoWebView
+
+Test messaging between two webview
+
+### AppDynamicRemoteConfig
+
+Test of reading from local config.json
+
+
+## Idea of native module available in web app
 
 * alert
 * toast
