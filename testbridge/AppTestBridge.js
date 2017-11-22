@@ -38,6 +38,8 @@ import FingerprintScanner from 'react-native-fingerprint-scanner';
 import FingerprintPopup from './FingerPrintPopup/FingerprintPopup';
 
 export default class AppTestBridge extends Component {
+  
+  
   constructor(props){
     super(props)
     this.onWebViewMessage = this.onWebViewMessage.bind(this);

@@ -18,7 +18,7 @@ export default class AppTwoWebView extends Component {
             console.warn(err);
             return;
         }
-        // change function name from null to "receive" to update reception input
+        // change function name from null to "receive" to update reception inputg
         msgData.targetFunc = "receive"
         this.myWebView2.postMessage(JSON.stringify(msgData));
       }

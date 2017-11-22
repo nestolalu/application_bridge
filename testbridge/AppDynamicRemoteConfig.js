@@ -1,0 +1,240 @@
+import React, { Component } from 'react';
+import {Platform, WebView, ActivityIndicator, StyleSheet, Alert, BackHandler, View, Text} from 'react-native';
+//import myData from './config.json';
+import Toast from 'react-native-toast-native';
+
+
+export default class AppDynamicRemoteConfig extends Component {
+
+
+
+    constructor(props){
+        super(props);
+        this.backHandler = this.backHandler.bind(this);
+        this.state = {
+            isLoading: true
+          }
+    }
+
+    componentDidMount(){
+        BackHandler.addEventListener('hardwareBackPress', this.backHandler);
+        return fetch('http://localhost:8080/config.json')
+        .then((response) => response.json())
+        .then((responseJson) => {
+            this.setState({
+                isLoading: false,
+                myData : responseJson,
+                url : responseJson.application.webModule.url
+            });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+    
+    componentWillUnmount(){
+        BackHandler.removeEventListener('hardwareBackPress', this.backHandler);
+    }
+
+    onNavigationStateChange = (navState) => {
+        this.setState({
+            backButtonEnabled: navState.canGoBack,
+        });
+    };
+
+    backHandler = () => {
+        if(this.state.backButtonEnabled) {
+          this.myWebView.goBack();
+          return true;
+        }else{
+          BackHandler.exitApp();
+        }
+    }
+
+    onWebViewMessage(event) {
+        // post back reply as soon as possible to enable sending the next message
+        this.myWebView.postMessage(event.nativeEvent.data);
+    
+        let msgData;
+        try {
+            msgData = JSON.parse(event.nativeEvent.data);
+        }
+        catch(err) {
+            console.warn(err);
+            return;
+        }
+    
+        // invoke target function
+        //const response = this[msgData.targetFunc].apply(this, [msgData]);
+        if(typeof (this[msgData.targetFunc]) !== "undefined"){
+            var myModule = this.state.myData.application.modules[msgData.targetFunc]
+            this.applyMyModule(myModule, msgData.data)
+            //const response = this[msgData.targetFunc].apply(this, [msgData.data]);
+        }else{
+            alert("The function '" +msgData.targetFunc+ "' is not defined")
+        }
+        
+        // trigger success callback
+
+        msgData.isSuccessfull = true;
+        //msgData.args = [response];
+        //this.myWebView.postMessage(JSON.stringify(msgData))
+      }
+
+      buildHeader(){
+          //TODO build style fo header
+          let headerStyle = {
+            height : 60,
+            backgroundColor:'#7795c6',
+            alignItems : 'center',
+            flexDirection: 'row'
+          }
+          return <View style={headerStyle}>
+                    <Text style={{fontSize:30, fontWeight:'bold', marginLeft:10}}>{this.state.myData.application.title}</Text>
+                </View>
+      }
+
+      render() {
+       
+        if (this.state.isLoading) {
+            return (
+              <View style={{flex: 1, paddingTop: 20, backgroundColor:'black'}}>
+                {this.ActivityIndicatorLoadingView()}
+              </View>
+            );
+          }
+          let header = null;
+          if (this.state.myData.application.header) {
+             header = this.buildHeader();
+          }
+        return (
+            <View style={styles.container}>
+                {header}
+                <WebView 
+                ref={(myWebView) => { this.myWebView = myWebView; }} 
+                javaScriptEnabled={true}
+                domStorageEnabled={true}
+                source={{uri : this.state.url}} 
+                onMessage={this.onWebViewMessage.bind(this)}
+                renderLoading={this.ActivityIndicatorLoadingView}
+                startInLoadingState={true} 
+                style={styles.WebViewStyle}
+                onNavigationStateChange={this.onNavigationStateChange.bind(this)}/>
+            </View>
+        );
+    }
+
+    ActivityIndicatorLoadingView() {
+        return (
+          <ActivityIndicator
+            color='#009688'
+            size='large'
+            style={styles.ActivityIndicatorStyle}
+          />
+        );
+      }
+    
+      applyMyModule(myModule, data){
+        if(myModule.type == "toastModule"){
+            this.showToast(myModule, data);
+        }else if(myModule.type == "alertModule"){
+            this.showAlert(myModule, data);
+        }
+    }
+
+    showAlert(myModule, message){
+        let buttons = [];
+        // Android philosophy supports only 3 buttons 
+        if("buttons" in myModule){
+            for(var k in myModule.buttons){
+                let textButton = k;
+                let actionButton = myModule.buttons[k];
+                if(actionButton == null)
+                    buttons.push({text : textButton})
+                else if("url" in actionButton)
+                    buttons.push({text : textButton, onPress: () => {this.changeURL(actionButton.url)} });
+                else{
+                    buttons.push({text : textButton, onPress: ()=> {
+                        var moduleName = Object.keys(actionButton)[0]; //getting the first key, check better solution
+                        var data = actionButton[moduleName];
+                        var myModule = this.state.myData.application.modules[moduleName]
+                        this.applyMyModule(myModule, data);
+                    }});
+                }
+            };
+        }
+        // Check if cancelable should be a given parameters
+        // Check if title should be a given parameters
+        Alert.alert(
+            'Alert Title',
+            message,
+            buttons,
+            { cancelable: false }
+          );
+    }
+
+    changeURL(myURL){
+        // Adding time because of refresh problem when coming back
+        this.setState({ url: myURL+ '?t='+Date.now() });
+    }
+
+    showToast(myModule, message){
+        let toastStyle = {}
+        if("style" in myModule){
+            var myStyle = myModule.style;
+            toastStyle={
+                backgroundColor: ("backgroundColor" in myStyle) ? myStyle.backgroundColor : "#000000",
+                width: ("width" in myStyle) ? myStyle.width : 300,
+                height : ("height" in myStyle) ? Platform.OS === ("ios") ? myStyle.height : myStyle.height+65 : Platform.OS === ("ios") ? 65 : 130,
+                color: ("color" in myStyle) ? myStyle.color : "#ffffff",
+                fontSize: ("fontSize" in myStyle) ? myStyle.fontSize : 15,
+                borderRadius: 15,
+                fontWeight: "bold",
+                yOffset: 200
+            };
+        }else{
+            toastStyle={
+                backgroundColor: "#999999",
+                width: 300,
+                height: Platform.OS === ("ios") ? 65 : 130,
+                color: "#ffffff",
+                fontSize: 15,
+                borderRadius: 15,
+                fontWeight: "bold",
+                yOffset: 200
+              };
+        }
+        var duration = Toast.SHORT
+        if("duration" in myModule) duration = (myModule.duration == "long") ? Toast.LONG : Toast.SHORT;
+        var position = Toast.BOTTOM
+        if("position" in myModule) position = (myModule.position == "top") ? Toast.TOP : Toast.BOTTOM;
+        
+        Toast.show(message, duration, position,toastStyle);
+    }
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#F5FCFF',
+        marginTop: Platform.OS === ("ios") ? 20 : 0,
+      },
+    WebViewStyle:
+    {
+       justifyContent: 'center',
+       alignItems: 'center',
+       flex:1,
+       margin: 5,
+       backgroundColor : 'transparent'
+    },
+    ActivityIndicatorStyle:{
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        alignItems: 'center',
+        justifyContent: 'center'
+      
+    }
+});
