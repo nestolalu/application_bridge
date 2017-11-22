@@ -52,9 +52,13 @@ export default class MyWebView extends Component {
     
         // invoke target function
         //const response = this[msgData.targetFunc].apply(this, [msgData]);
-        var myModule = myData.application.modules[msgData.targetFunc]
-        this.applyMyModule(myModule, msgData.data)
-        //const response = this[msgData.targetFunc].apply(this, [msgData.data]);
+        if(typeof (this[msgData.targetFunc]) !== "undefined"){
+            var myModule = myData.application.modules[msgData.targetFunc]
+            this.applyMyModule(myModule, msgData.data)
+            //const response = this[msgData.targetFunc].apply(this, [msgData.data]);
+        }else{
+            alert("The function '" +msgData.targetFunc+ "' is not defined")
+        }
         
         // trigger success callback
 

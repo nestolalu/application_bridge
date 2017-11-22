@@ -104,6 +104,8 @@ export default class App extends Component {
     const response = "response"
     if(typeof (this[msgData.targetFunc]) !== "undefined")
       this[msgData.targetFunc].apply(this, [msgData.data]);
+    else
+      alert("The function '" +msgData.targetFunc+ "' is not defined")
     
     // trigger success callback
 
@@ -148,8 +150,8 @@ export default class App extends Component {
   };
 
   render() {
-    //var url = "http://10.11.38.74:8080";
-    var url = "https://github.com/nestolalu/application_bridge"
+    var url = "http://10.11.38.96:8080";
+    //var url = "https://github.com/nestolalu/application_bridge"
     const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
     const errorMessage = this.state.errorMessage;
     const popupShowed = this.state.popupShowed;
