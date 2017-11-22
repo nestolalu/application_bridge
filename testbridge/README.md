@@ -24,19 +24,19 @@ In RN project, in file index.js, choose the right APP to test (import & register
 
 **TODO** : launch screen
 
-### AppTestBridge
+1. AppTestBridge
 
 Test of bridging
 
-### AppDynamicLocalConfig
+2. AppDynamicLocalConfig
 
 Test of reading from local config.json
 
-### AppTwoWebView
+3. AppTwoWebView
 
 Test messaging between two webview
 
-### AppDynamicRemoteConfig
+4. AppDynamicRemoteConfig
 
 Test of reading from local config.json
 
