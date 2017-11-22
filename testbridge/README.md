@@ -24,21 +24,15 @@ In RN project, in file index.js, choose the right APP to test (import & register
 
 **TODO** : launch screen
 
-1. AppTestBridge
+1. _AppTestBridge_ : Test of bridging
 
-Test of bridging
+2. _AppDynamicLocalConfig_ : Test of reading from local config.json
 
-2. AppDynamicLocalConfig
+3. _AppTwoWebView_ : Test messaging between two webview
 
-Test of reading from local config.json
+4. _AppDynamicRemoteConfig_ : Test of reading from local config.json
 
-3. AppTwoWebView
 
-Test messaging between two webview
-
-4. AppDynamicRemoteConfig
-
-Test of reading from local config.json
 
 
 ## Idea of native module available in web app
