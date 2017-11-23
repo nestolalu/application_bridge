@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Platform, WebView, ActivityIndicator, StyleSheet, Alert, BackHandler, View, Text} from 'react-native';
+import {Platform, WebView, ActivityIndicator, StyleSheet, Alert, BackHandler, View, Text, TouchableOpacity} from 'react-native';
 //import myData from './config.json';
 import Toast from 'react-native-toast-native';
 
@@ -77,6 +77,14 @@ export default class AppDynamicLocalConfig extends Component {
           }
           return <View style={headerStyle}>
                     <Text style={{fontSize:30, fontWeight:'bold', marginLeft:10}}>{myData.application.title}</Text>
+                    <View style={{flex:1}}>
+                        <TouchableOpacity
+                        disabled={!this.state.backButtonEnabled}
+                        onPress={this.backHandler.bind(this)}
+                        style={{ alignSelf: 'flex-end', marginRight:10, display: !this.state.backButtonEnabled ? 'none':'flex'}}>
+                        <Text style={styles.topbarText}>Go Back</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
       }
 

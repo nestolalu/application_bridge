@@ -7,11 +7,12 @@ import {
   View,
   Image,
   Text,
-  Platform
+  Platform,
+  TouchableHighlight
 } from 'react-native';
 
 const window = Dimensions.get('window');
-const uri = 'https://pickaface.net/gallery/avatar/Opi51c74d0125fd4.png';
+const uri = 'https://pickaface.net/gallery/avatar/Opi51c74b9f4f950.png';
 
 const styles = StyleSheet.create({
   menu: {
@@ -52,21 +53,22 @@ export default function Menu({ onItemSelected }) {
           style={styles.avatar}
           source={{ uri }}
         />
-        <Text style={styles.name}>Your name</Text>
+        <Text style={styles.name}>Luca</Text>
       </View>
-
+      <TouchableHighlight>
       <Text
-        onPress={() => onItemSelected('About')}
+        onPress={() => onItemSelected('TestBridge')}
         style={styles.item}
       >
-        About
+        TestBridge
       </Text>
+      </TouchableHighlight>
 
       <Text
-        onPress={() => onItemSelected('Contacts')}
+        onPress={() => onItemSelected('Go to google')}
         style={styles.item}
       >
-        Contacts
+        Go to google
       </Text>
     </ScrollView>
   );

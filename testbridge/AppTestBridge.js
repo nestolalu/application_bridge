@@ -48,7 +48,8 @@ export default class AppTestBridge extends Component {
       isOpen: false,
       selectedItem: 'About',
       popupShowed: false, //FingerPrint
-      popupShowed: false //FingerPrint
+      popupShowed: false, //FingerPrint
+      url : "http://10.11.38.88:8080"
     };
   }
 
@@ -77,11 +78,19 @@ export default class AppTestBridge extends Component {
     this.setState({ isOpen });
   }
 
-  onMenuItemSelected = item =>
-  this.setState({
-    isOpen: false,
-    selectedItem: item,
-  });
+  onMenuItemSelected = item => {
+    this.setState({
+      isOpen: false,
+      selectedItem: item,
+    });
+    if(item == "TestBridge"){
+      if('http://10.11.38.88:8080' != this.state.url)
+        this.setState({ url: 'http://10.11.38.88:8080'});
+    }else{
+      if('http://www.google.com' != this.state.url)
+        this.setState({ url: 'http://www.google.com'});
+    }
+  };
 
   _refWebView = (webview) => {
     this.myWebView = webview;
@@ -152,8 +161,7 @@ export default class AppTestBridge extends Component {
   };
 
   render() {
-    var url = "http://10.11.38.88:8080";
-    //var url = "https://github.com/nestolalu/application_bridge"
+
     const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
     const errorMessage = this.state.errorMessage;
     const popupShowed = this.state.popupShowed;
@@ -181,7 +189,7 @@ export default class AppTestBridge extends Component {
             ref={this._refWebView} 
             javaScriptEnabled={true}
             domStorageEnabled={true}
-            source={{uri : url}} 
+            source={{uri : this.state.url}} 
             onMessage={this.onWebViewMessage}
             renderLoading={this.ActivityIndicatorLoadingView}
             startInLoadingState={true} 
