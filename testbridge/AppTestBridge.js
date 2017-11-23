@@ -152,7 +152,7 @@ export default class AppTestBridge extends Component {
   };
 
   render() {
-    var url = "http://10.11.38.27:8080";
+    var url = "http://10.11.38.88:8080";
     //var url = "https://github.com/nestolalu/application_bridge"
     const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
     const errorMessage = this.state.errorMessage;

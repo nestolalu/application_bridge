@@ -3,7 +3,7 @@
     "title" : "Application title",
     "header" : true,
     "webModule" : {
-        "url" : "http://10.11.38.27:8080",
+        "url" : "http://10.11.38.88:8080",
         "name" : "container"
     },
     "modules" : {

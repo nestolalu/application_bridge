@@ -11,7 +11,7 @@ def chat():
     return template('chat')
 
 from bottle import static_file
-@route('/<filename:re:.*\.json>')
+@route('/<filename:re:.*\.json>', methods=['GET'])
 def send_json(filename):
     return static_file(filename, root='.', mimetype='application/json')
 

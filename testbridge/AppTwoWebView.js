@@ -40,7 +40,8 @@ export default class AppTwoWebView extends Component {
       }
 
       render() {
-
+        var url1 = 'http://10.11.38.88:8080/chat'
+        var url2 = 'http://10.11.38.88:8080/chat'
         
         return (
             <View style={styles.container}>
@@ -50,7 +51,7 @@ export default class AppTwoWebView extends Component {
                 ref={(myWebView1) => { this.myWebView1 = myWebView1; }} 
                 javaScriptEnabled={true}
                 domStorageEnabled={true}
-                source={{uri : 'http://10.11.38.27:8080/chat'}} 
+                source={{uri : url1}} 
                 onMessage={this.onWebViewMessage1.bind(this)}
                 renderLoading={this.ActivityIndicatorLoadingView}
                 startInLoadingState={true} 
@@ -63,7 +64,7 @@ export default class AppTwoWebView extends Component {
                 ref={(myWebView2) => { this.myWebView2 = myWebView2; }} 
                 javaScriptEnabled={true}
                 domStorageEnabled={true}
-                source={{uri : "http://10.11.38.27:8080/chat"}} 
+                source={{uri : url2}} 
                 onMessage={this.onWebViewMessage2.bind(this)}
                 renderLoading={this.ActivityIndicatorLoadingView}
                 startInLoadingState={true} 

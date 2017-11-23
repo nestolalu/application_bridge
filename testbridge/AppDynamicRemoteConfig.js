@@ -18,8 +18,38 @@ export default class AppDynamicRemoteConfig extends Component {
 
     componentDidMount(){
         BackHandler.addEventListener('hardwareBackPress', this.backHandler);
-        return fetch('http://localhost:8080/config.json')
-        .then((response) => response.json())
+        var url = 'http://10.11.38.88:8080/config.json';
+        
+        var myHeaders = new Headers();
+        myHeaders.append('pragma', 'no-cache');
+        myHeaders.append('cache-control', 'no-cache');
+        
+        var myInit = {
+          method: 'GET',
+          headers: myHeaders,
+        };
+        
+        var myRequest = new Request(url);
+
+        fetch(myRequest, myInit)
+        .then((response) => {
+            return response.json();
+        })
+        .then((responseJson) => {
+            this.setState({
+                isLoading: false,
+                myData : responseJson,
+                url : responseJson.application.webModule.url
+            });
+        })
+        .catch((error) => {
+            console.error(error);
+          });
+        /*
+        return fetch(myRequest,  myInit)
+        .then((response) => {
+            response.json();
+        })
         .then((responseJson) => {
             this.setState({
                 isLoading: false,
@@ -29,7 +59,7 @@ export default class AppDynamicRemoteConfig extends Component {
         })
         .catch((error) => {
           console.error(error);
-        });
+        });*/
     }
     
     componentWillUnmount(){
